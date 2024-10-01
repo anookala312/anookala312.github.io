@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Cards</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <link rel="stylesheet" href="new.css">
+</head>
+<body>
+  <h2>Popular Movie</h2>
+  <hr>
+  <div id="page_1" class="page_wrapper">
+    <script>
+      $(document).ready(function() {
+        // Function to create a card
+        function createCard(movie) {
+          return `
+            <div class="card style_1">
+              <div class="image">
+                <div class="wrapper">
+                    <img loading="lazy" class="poster" src="https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}" alt="${movie.title}">
+                </div>
+              </div>
+              <div class="content">
+                <h2>${movie.title}</h2>
+                <p>Release Date:${movie.release_date}</p>
+                <p>Vote Average:${movie.vote_average}</p>
+              </div>
+            </div>
+          `;
+        }
+
+        // Fetch data from the API
+        fetch('https://api.themoviedb.org/3/movie/popular?api_key=3598c879716793ea19fd2ed6dab9c0ea')
+          .then(response => response.json())
+          .then(data => {
+            // Display the first 20 items in card view
+            var pageContainer = $("#page_1");
+            data.results.slice(0, 20).forEach(function(movie) {
+              var cardHtml = createCard(movie);
+              pageContainer.append(cardHtml);
+            });
+          })
+      });
+    </script>
+  </div>
+
+</body>
+</html>
